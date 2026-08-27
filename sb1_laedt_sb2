@@ -1,0 +1,71 @@
+- id: sb1_laedt_sb2_intelligent
+  alias: SB1 lädt SB2 intelligent
+  description: 'Schaltet die Solarbank E1600 Gen2 abhängig vom Ladezustand der Solarbank
+    2. Prüfung alle 5 Minuten.   '
+  mode: single
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  - platform: homeassistant
+    event: start
+  variables:
+    sb2_soc: '{{ states(''sensor.sb_2_e1600_pro_ladestand'') | int(0) }}'
+    sb1_soc: '{{ states(''sensor.solarbank_e1600_ladestand'') | int(0) }}'
+    aktuelle_leistung: '{{ states(''sensor.solarbank_e1600_einspeisevorgabe'') | int(0)
+      }}'
+    soll_leistung: "{% if sb2_soc < 5 %}\n  800\n{% elif sb2_soc < 10 %}\n  400\n{%
+      elif sb2_soc < 20 %}\n  200\n{% else %}\n  0\n{% endif %}\n"
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ soll_leistung | int > 0 }}'
+      - condition: numeric_state
+        entity_id: sensor.solarbank_e1600_ladestand
+        above: 10
+      sequence:
+      - if:
+        - condition: state
+          entity_id: switch.solarbank_e1600_entladeprioritat
+          state: 'off'
+        then:
+        - service: switch.turn_on
+          target:
+            entity_id: switch.solarbank_e1600_entladeprioritat
+      - if:
+        - condition: template
+          value_template: '{{ aktuelle_leistung | int != soll_leistung | int }}
+            '
+        then:
+        - service: number.set_value
+          target:
+            entity_id: number.solarbank_e1600_system_einspeisevorgabe
+          data:
+            value: '{{ soll_leistung | int }}'
+      - if:
+        - condition: state
+          entity_id: switch.solarbank_e1600_erlaube_leistungsabgabe
+          state: 'off'
+        then:
+        - delay: 00:00:03
+        - service: switch.turn_on
+          target:
+            entity_id: switch.solarbank_e1600_erlaube_leistungsabgabe
+    default:
+    - if:
+      - condition: state
+        entity_id: switch.solarbank_e1600_erlaube_leistungsabgabe
+        state: 'on'
+      then:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.solarbank_e1600_erlaube_leistungsabgabe
+      - delay: 00:00:02
+    - if:
+      - condition: state
+        entity_id: switch.solarbank_e1600_entladeprioritat
+        state: 'on'
+      then:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.solarbank_e1600_entladeprioritat
