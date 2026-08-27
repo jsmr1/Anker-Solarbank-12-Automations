@@ -2,10 +2,11 @@
 
 Nulleinspeisung mit SB e1600 Gen2 (inkl. Schalter) und SB 2 pro
 
+Beide Solarbanken sind als <b>eigene Systeme bei Anker</b> eingetragen
+
 Verwendete Entitäten:
 
-SB1:
-
+SB1:<br/>
 sensor.solarbank_e1600_ladestand<br/>
 sensor.solarbank_e1600_einspeisevorgabe<br/>
 switch.solarbank_e1600_entladeprioritat<br/>
