@@ -1,5 +1,7 @@
 # Anker-Solarbank-12-Automations
 
+Werden in die automations.yaml eingetragen!
+
 Nulleinspeisung mit SB e1600 Gen2 (inkl. Schalter) und SB 2 pro
 
 Beide Solarbanken sind als <b>eigene Systeme bei Anker</b> eingetragen
