@@ -31,7 +31,6 @@
           | float(0) * -1 %} {% set netz = states(''sensor.online_gemessener_verbrauch_sw'')
           | float(0) %} {% set ziel = shelly + netz %} {{ (ziel - aktuelle_vorgabe)
           | abs > 15 }}
-
           '
       sequence:
       - service: number.set_value
@@ -50,20 +49,7 @@
             der Solarbank auf 0 bis 800W #} {% if neue_vorgabe > 800 %}\n  800\n{%
             elif neue_vorgabe < 0 %}\n  0\n{% else %}\n  {{ neue_vorgabe | int }}\n{%
             endif %}\n"
-- id: '1786701613416'
-  alias: Hichi Tageskosten Speicher 2 hochsetzen
-  description: ''
-  triggers:
-  - trigger: time
-    at: 00:05:00
-  conditions: []
-  actions:
-  - action: input_number.set_value
-    target:
-      entity_id: input_number.hichi_tageskosten_speicher_2
-    data:
-      value: "{{\n  (\n    state_attr(\n      'sensor.keller_tasmota_volkszahler_stromverbrauch_tag',\n
-        \     'last_period'\n    ) | float(0)\n    *\n    states('input_number.strompreis')
+
         | float(0)\n  ) | round(2)\n}}\n"
   mode: single
 (END)
