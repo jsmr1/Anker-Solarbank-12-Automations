@@ -19,5 +19,5 @@ SB2 pro: <br/>
 sensor.sb_2_e1600_pro_ladestand<br/>
 sensor.sb_2_e1600_pro_einspeisevorgabe<br/>
 number.sb_2_e1600_pro_system_einspeisevorgabe<br/>
-sensor.wohnzimmer_akku_shelly_leistung   <- Abgabe der SB2 kann aber auch mit der dem  sensor.sb_2_e1600_pro_?leistung/einspeisung? ersetzt werden
+sensor.wohnzimmer_akku_shelly_leistung   <small><- Abgabe der SB2 kann aber auch mit der dem  sensor.sb_2_e1600_pro_?leistung/einspeisung? ersetzt werden</small>
 <br/>sensor.online_gemessener_verbrauch_sw <- am Zähler gemessener Verbrauch vom Netz
